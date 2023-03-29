@@ -37,4 +37,3 @@ app.use('/distinct-groups', distinctGroupList())
 app.use('/distinct-wells', distinctWellList())
 
 app.listen(5000, () => console.log('Server started on port 5000.'));
-
