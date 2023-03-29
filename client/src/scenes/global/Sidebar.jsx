@@ -115,7 +115,7 @@ const Sidebar = () => {
             </Box>
             <Item
               title = "LogX"
-              to = "/"
+              to = "/wireline"
               icon = {<AlignVerticalTopIcon  style={{ fontSize: 30 }} />}
               selected = {selected}
               setSelected = {setSelected}
