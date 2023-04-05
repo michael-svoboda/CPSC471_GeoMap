@@ -96,6 +96,30 @@ const Topbar = () => {
       }
     }
 
+   async function setSelectedWells(wells){
+      const realwells = [].concat(wells);
+      try{
+      console.log(typeof realwells);
+      console.log("Wells", realwells);
+      await fetch('http://localhost:5000/selection-update', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ selectedWells: realwells })
+      }).then(response => {
+          if (response.ok) {
+            console.log('Wells Selected in database');
+          } else {
+            console.error('Failed to select wells in database');
+          }
+        })
+        .catch(error => console.error(error)) 
+     
+    }catch (err){
+      console.error('Error:', err);
+    }
+      }
 
     const handleGroupOpen = () => {
       setIsGroupDropdownOpen(true);
@@ -142,6 +166,7 @@ const Topbar = () => {
       const handleWellChange = (event) => {
         const selectedValues = event.target.value;
         setWell(selectedValues);
+        setSelectedWells(selectedValues);
         //fetchWellNames(alignment, group);
         //setFetchCalled(true); // add this line to update fetchCalled state
       };
