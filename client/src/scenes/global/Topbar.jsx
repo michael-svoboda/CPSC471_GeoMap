@@ -88,7 +88,7 @@ const Topbar = () => {
           body: JSON.stringify({ wellgroups: groups, type: types })
         });
         const wellNamesJson = await response.json();
-        const wellNames = wellNamesJson.map(item => item.wellname);
+        const wellNames = wellNamesJson.map(item => item.UWI);
         setWellNames(wellNames);
         console.log(wellNames);
       } catch (err) {
