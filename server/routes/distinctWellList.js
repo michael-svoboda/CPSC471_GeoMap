@@ -19,7 +19,7 @@ function distinctWellList() {
       const typeStr = `'${type.join('\' , \'')}'`;
       //console.log("Types: ", types)
       //console.log("Groups: ", wellgroup)
-      const sql_1 = 'SELECT DISTINCT wellname FROM wellSelection WHERE wellgroup IN ('
+      const sql_1 = 'SELECT DISTINCT UWI FROM wellSelection WHERE wellgroup IN ('
       const sql_2 = ') AND type IN ('
       const sql_3 = ')'; // modify SQL query to filter based on wellgroups and types
       const sql = sql_1 + wellgroupsStr + sql_2 + typeStr + sql_3
