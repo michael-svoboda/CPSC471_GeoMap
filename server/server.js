@@ -8,6 +8,8 @@ const deleteWellGroupFromDB = require('./routes/deleteWellGroupFromDB');
 const distinctGroupList = require('./routes/distinctGroupList');
 const distinctWellList = require('./routes/distinctWellList');
 const UpdateSelectedWells = require('./routes/UpdateSelectedWells');
+const getProdFromDB = require('./routes/getProdFromDB');
+const getGasFromDB = require('./routes/getGasFromDB');
 
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -49,5 +51,7 @@ app.use('/delete-well-group', deleteWellGroupFromDB());
 app.use('/distinct-groups', distinctGroupList());
 app.use('/distinct-wells', distinctWellList());
 app.use('/selection-update', UpdateSelectedWells());
+app.use('/prod-data', getProdFromDB());
+app.use('/gas-data', getGasFromDB());
 
 app.listen(5000, () => console.log('Server started on port 5000.'));
