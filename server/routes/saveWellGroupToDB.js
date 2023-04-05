@@ -54,7 +54,7 @@ function saveWellGroupToDB() {
         console.log("WELL AT: ", well, i, wellListSelection.length)
 
         // Define the SQL query to insert the well into the wellSelection table
-        const sql = `INSERT INTO wellSelection (wellname, type, wellgroup) VALUES ('${well.name}', '${well.type}', '${groupname}')`;
+        const sql = `INSERT INTO wellSelection (UWI, type, wellgroup) VALUES ('${well.name}', '${well.type}', '${groupname}')`;
         //console.log("INSERTED: ", well.name, well.type, groupname)
 
         // Execute the query on the database connection
