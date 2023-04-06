@@ -1,4 +1,5 @@
 import { ColorModeContext, useMode} from "./theme";
+import {Login} from "./Login";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import {Routes, Route} from "react-router-dom";
 import Topbar from "./scenes/global/Topbar";
@@ -29,6 +30,7 @@ function App() {
     <ThemeProvider theme = {theme}>
       <CssBaseline />
       <div className="app" >
+        <Login/>
         <Sidebar/>
         <main className = "content"  >
           <Topbar />

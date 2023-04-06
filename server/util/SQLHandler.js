@@ -4,10 +4,10 @@ class SQLHandler {
   constructor() {
     this.config = {
         host: 'testmike.ddns.net',
-        user: 'michael',
+        user: 'murtaza',
         password: 'Cpsc471!',
         database: 'petromap',
-        port: '3306'
+        port: '3333'
       };
   }
 
