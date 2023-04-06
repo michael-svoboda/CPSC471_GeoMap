@@ -1,5 +1,5 @@
 const express = require('express');
-const SQLHandler = require('../util/SQLHandlerLocal');
+const SQLHandler = require('../util/SQLHandler');
 
 function deleteWellGroupFromDB() {
   const router = express.Router();
@@ -11,7 +11,7 @@ function deleteWellGroupFromDB() {
       await sqlHandler.connect();
 
       // Define the SQL query to delete wells with the given groupname
-      const sql = `DELETE FROM wellSelection WHERE wellgroup = '${groupname}'`;
+      const sql = `DELETE FROM Well_Selection WHERE wellgroup = '${groupname}'`;
 
       // Execute the query on the database connection
       await sqlHandler.query(sql);

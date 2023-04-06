@@ -8,7 +8,7 @@ function horzWellsRouter() {
     const file = path.join(__dirname, '../data/horizontal_well_data.geojson');
     res.sendFile(file);
   });
-
+ 
   return router;
 }
 

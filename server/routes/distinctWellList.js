@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
-const SQLHandler = require('../util/SQLHandlerLocal');
+const SQLHandler = require('../util/SQLHandler');
 
 function distinctWellList() {
   // define the route to handle the SQL query
@@ -19,13 +19,13 @@ function distinctWellList() {
       const typeStr = `'${type.join('\' , \'')}'`;
       //console.log("Types: ", types)
       //console.log("Groups: ", wellgroup)
-      const sql_1 = 'SELECT DISTINCT UWI FROM wellSelection WHERE wellgroup IN ('
+      const sql_1 = 'SELECT DISTINCT UWI FROM Well_Selection WHERE wellgroup IN ('
       const sql_2 = ') AND type IN ('
       const sql_3 = ')'; // modify SQL query to filter based on wellgroups and types
       const sql = sql_1 + wellgroupsStr + sql_2 + typeStr + sql_3
       //const sql = 'SELECT DISTINCT wellgroup FROM wellSelection WHERE wellgroup = ? OR wellgroup = ? OR wellgroup = ? AND type = ?';
       // Execute the query on the database connection
-      console.log("SQL Query: ", sql);
+      console.log("SQL Query lol: ", sql);
       const result = await sqlHandler.query(sql);
       //const result = await sqlHandler.query(sql, [...wellgroups, ...type]);
 
