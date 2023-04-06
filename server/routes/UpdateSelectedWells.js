@@ -27,7 +27,7 @@ function UpdateSelectedWells() {
     await sqlHandler.query(presql);
 
     // Loop through the wellListSelection array and insert each well into the database
-    for (let i = 0; i < data.selectedWells.length; i++) {
+    for (let i = 0; i < data.selectedWells.length; i++) { 
       const well = data.selectedWells[i];
       console.log("WELL AT: ", well, i, data.selectedWells.length)
 
