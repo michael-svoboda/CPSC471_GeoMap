@@ -3,7 +3,7 @@ const mysql = require('mysql2/promise');
 class SQLHandler {
   constructor() {
     this.config = {
-        host: '192.168.1.79',
+        host: 'testmike.ddns.net',
         user: 'michael',
         password: 'Cpsc471!',
         database: 'petromap',

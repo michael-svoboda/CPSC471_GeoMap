@@ -8,7 +8,7 @@ class WellSelectionHandler {
 
   saveToDatabase() {
     const connection = mysql.createConnection({
-      host: '192.168.1.79',
+      host: 'testmike.ddns.net',
       user: 'alex',
       password: 'Cpsc471!',
       database: 'petromap',
