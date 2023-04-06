@@ -25,6 +25,7 @@ import MuiAccordion from '@mui/material/Accordion';
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
+import { gridColumnGroupsLookupSelector } from "@mui/x-data-grid";
 
 const ITEM_HEIGHT = 60;
 const ITEM_PADDING_TOP = 0;
@@ -52,13 +53,16 @@ const MenuProps = {
   
 // Box component allows us to write the CSS properties right onto the div
 const Topbar = () => {
+    const [prodset, setProdDataset] = React.useState([]);
+    const [gasset, setGasDataset] = React.useState([]);
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const colorMode = useContext(ColorModeContext);
     const [group, setGroup] = React.useState([]);
     const [groupNames, setGroupNames] = React.useState([]);
     const [well, setWell] = React.useState([]);
-    const [wellNames, setWellNames] = React.useState([]);
+    const [UWI, setUWIs] = React.useState([]);
+    const [selected, setSelected] = React.useState([]);
     const [alignment, setAlignment] = React.useState(['horizontal', 'vertical']);
 
     const [isGroupDropdownOpen, setIsGroupDropdownOpen] = React.useState(false);
@@ -87,16 +91,16 @@ const Topbar = () => {
           },
           body: JSON.stringify({ wellgroups: groups, type: types })
         });
-        const wellNamesJson = await response.json();
-        const wellNames = wellNamesJson.map(item => item.UWI);
-        setWellNames(wellNames);
-        console.log(wellNames);
+        const UWIsJson = await response.json();
+        const UWIs = UWIsJson.map(item => item.UWI);
+        setUWIs(UWIs);
+        console.log(UWIs);
       } catch (err) {
         console.error('Error:', err);
       }
     }
 
-   async function setSelectedWells(wells){
+    async function setSelectedWells(wells){
       const realwells = [].concat(wells);
       try{
       console.log(typeof realwells);
@@ -121,6 +125,39 @@ const Topbar = () => {
     }
       }
 
+  async function fetchGasData() {
+
+        try {
+          console.log("lover");
+          const response = await fetch('http://localhost:5000/gas-data');
+          const DataJson = await response.json();
+          const Data = DataJson.map(item => item.Data);
+          console.log(DataJson);
+          if(DataJson!=undefined){
+            setGasDataset(DataJson);
+          }
+          
+        } catch (err) {
+          console.error('Error:', err);
+        }
+  }
+
+  async function fetchProdData() {
+
+    try {
+      console.log("hater"); 
+      const response = await fetch('http://localhost:5000/prod-data');
+      const DataJson = await response.json();
+      const Data = DataJson.map(item => item.Data);
+      console.log(DataJson);
+      if(DataJson!=undefined){
+        setProdDataset(DataJson);
+      }
+      
+    } catch (err) {
+      console.error('Error:', err);
+    }
+  }
     const handleGroupOpen = () => {
       setIsGroupDropdownOpen(true);
       fetchGroupNames();
@@ -165,8 +202,10 @@ const Topbar = () => {
 
       const handleWellChange = (event) => {
         const selectedValues = event.target.value;
-        setWell(selectedValues);
+        setWell(selectedValues); //for selecting wells
         setSelectedWells(selectedValues);
+        fetchProdData();
+        fetchGasData();
         //fetchWellNames(alignment, group);
         //setFetchCalled(true); // add this line to update fetchCalled state
       };
@@ -221,7 +260,7 @@ const Topbar = () => {
           input={<OutlinedInput label="Name" />}
           MenuProps={MenuProps}
         >
-          {wellNames.map((name) => (
+          {UWI.map((name) => (
             <MenuItem
               key={name}
               value={name}
