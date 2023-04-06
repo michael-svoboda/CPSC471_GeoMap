@@ -43,7 +43,7 @@ function saveWellGroupToDB() {
       
       
       const uniqueWellListSelection = removeDuplicateNames(wellListSelection)
-      console.log("PRINTEDOUT: ", wellListSelection)
+      console.log("PRINTEDOUT: ", uniqueWellListSelection)
 
       // Connect to the database
       await sqlHandler.connect();
