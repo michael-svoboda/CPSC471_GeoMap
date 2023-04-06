@@ -93,7 +93,7 @@ const ProductionChart = () => {
   async function fetchProdData() {
 
     try {
-      console.log("hater");
+      console.log("hater"); 
       const response = await fetch('http://localhost:5000/prod-data');
       const DataJson = await response.json();
       const Data = DataJson.map(item => item.Data);
