@@ -1,7 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const SQLHandler = require('../util/SQLHandlerLocal');
+const SQLHandler = require('../util/SQLHandler');
 
 
 // function to make a POST request that will read in the existing well-selection-list.json
@@ -43,7 +43,7 @@ function saveWellGroupToDB() {
       
       
       const uniqueWellListSelection = removeDuplicateNames(wellListSelection)
-      console.log("PRINTEDOUT: ", uniqueWellListSelection)
+      console.log("PRINTEDOUT: ", wellListSelection)
 
       // Connect to the database
       await sqlHandler.connect();
@@ -54,7 +54,7 @@ function saveWellGroupToDB() {
         console.log("WELL AT: ", well, i, wellListSelection.length)
 
         // Define the SQL query to insert the well into the wellSelection table
-        const sql = `INSERT INTO wellSelection (UWI, type, wellgroup) VALUES ('${well.name}', '${well.type}', '${groupname}')`;
+        const sql = `INSERT INTO Well_Selection (UWI, type, wellgroup) VALUES ('${well.name}', '${well.type}', '${groupname}')`;
         //console.log("INSERTED: ", well.name, well.type, groupname)
 
         // Execute the query on the database connection

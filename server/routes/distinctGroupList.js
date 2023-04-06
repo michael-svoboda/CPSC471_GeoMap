@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
-const SQLHandler = require('../util/SQLHandlerLocal');
+const SQLHandler = require('../util/SQLHandler');
 
 function distinctGroupList() {
   // define the route to handle the SQL query
@@ -12,7 +12,7 @@ function distinctGroupList() {
       await sqlHandler.connect();
     
       // Define the SQL query to select distinct well groups from the wellSelection table
-      const sql = 'SELECT DISTINCT wellgroup FROM wellSelection';
+      const sql = 'SELECT DISTINCT wellgroup FROM Well_Selection';
     
       // Execute the query on the database connection
       const result = await sqlHandler.query(sql);
