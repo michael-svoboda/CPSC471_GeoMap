@@ -38,5 +38,3 @@ function selectedWellsRouter() {
 
 module.exports = selectedWellsRouter;
 
-
-
