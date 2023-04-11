@@ -27,6 +27,10 @@ import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import { gridColumnGroupsLookupSelector } from "@mui/x-data-grid";
 
+//import {fetchProdData, fetchGasData} from "../production/index/ProductionChart"
+import Production from "../production";
+
+
 const ITEM_HEIGHT = 60;
 const ITEM_PADDING_TOP = 0;
 const MenuProps = {
@@ -52,7 +56,7 @@ const MenuProps = {
  
   
 // Box component allows us to write the CSS properties right onto the div
-const Topbar = () => {
+const Topbar = (props) => {
     const [prodset, setProdDataset] = React.useState([]);
     const [gasset, setGasDataset] = React.useState([]);
     const theme = useTheme();
@@ -125,7 +129,8 @@ const Topbar = () => {
     }
       }
 
-  async function fetchGasData() {
+  /*
+      async function fetchGasData() {
 
         try {
           console.log("lover");
@@ -141,8 +146,10 @@ const Topbar = () => {
           console.error('Error:', err);
         }
   }
+  */
 
-  async function fetchProdData() {
+  /*
+    async function fetchProdData() {
 
     try {
       console.log("hater"); 
@@ -158,6 +165,7 @@ const Topbar = () => {
       console.error('Error:', err);
     }
   }
+  */
     const handleGroupOpen = () => {
       setIsGroupDropdownOpen(true);
       fetchGroupNames();
@@ -204,8 +212,8 @@ const Topbar = () => {
         const selectedValues = event.target.value;
         setWell(selectedValues); //for selecting wells
         setSelectedWells(selectedValues);
-        fetchProdData();
-        fetchGasData();
+        //Production.fetchGasData();
+        //Production.fetchProdData();
         //fetchWellNames(alignment, group);
         //setFetchCalled(true); // add this line to update fetchCalled state
       };

@@ -13,6 +13,7 @@ import Map from "./scenes/map";
 import Production from "./scenes/production";
 import Geology from "./scenes/geology";
 import LogCharts from "./scenes/wireline";
+import React from 'react';
 /* 
 import Bar from ".scenes/bar";
 
@@ -24,6 +25,43 @@ import Calendar from ".scenes/calendar"; */
 
 function App() {
   const [theme, colorMode] = useMode();
+  const [prodset, setProdDataset] = React.useState([]);
+  const [gasset, setGasDataset] = React.useState([]);
+
+  async function fetchProdData() {
+
+    try {
+      console.log("hater"); 
+      const response = await fetch('http://localhost:5000/prod-data');
+      const DataJson = await response.json();
+      const Data = DataJson.map(item => item.Data);
+      console.log(DataJson);
+      if(DataJson!=undefined){
+        setProdDataset(DataJson);
+      }
+      
+    } catch (err) {
+      console.error('Error:', err);
+    }
+  }
+
+  async function fetchGasData() {
+
+    try {
+      console.log("lover");
+      const response = await fetch('http://localhost:5000/gas-data');
+      const DataJson = await response.json();
+      const Data = DataJson.map(item => item.Data);
+      console.log(DataJson);
+      if(DataJson!=undefined){
+        setGasDataset(DataJson);
+      }
+      
+    } catch (err) {
+      console.error('Error:', err);
+    }
+  }
+
 
   return (
   <ColorModeContext.Provider value = { colorMode }>
@@ -37,9 +75,9 @@ function App() {
           <Routes> 
             <Route path = "/map" element = { <Map /> } />
             <Route path = "/" element = { <Dashboard /> } />
-            <Route path = "/production" element = { <Production /> } />
+            <Route path = "/production" element = { <Production prodset = {prodset}/> } />
             <Route path = "/geology" element = { <Geology /> } />
-            <Route path = "/wireline" element = { <LogCharts /> } />
+            <Route path = "/wireline" element = { <LogCharts fetchGasData = {fetchGasData} /> } />
             <Route path = "/contacts" element = { <Contacts /> } />
             <Route path = "/invoices" element = { <Invoices /> } />
             <Route path = "/form" element = { <Form /> } />

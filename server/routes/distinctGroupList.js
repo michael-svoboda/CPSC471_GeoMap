@@ -9,7 +9,7 @@ function distinctGroupList() {
     const sqlHandler = new SQLHandler();
     try {
       // Connect to the database
-      await sqlHandler.connect();
+      //await sqlHandler.connect();
     
       // Define the SQL query to select distinct well groups from the wellSelection table
       const sql = 'SELECT DISTINCT wellgroup FROM Well_Selection';

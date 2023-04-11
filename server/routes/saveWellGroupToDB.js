@@ -46,7 +46,7 @@ function saveWellGroupToDB() {
       console.log("PRINTEDOUT: ", wellListSelection)
 
       // Connect to the database
-      await sqlHandler.connect();
+      //await sqlHandler.connect();
 
       // Loop through the wellListSelection array and insert each well into the database
       for (let i = 0; i < uniqueWellListSelection.length; i++) {

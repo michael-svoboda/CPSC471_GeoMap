@@ -21,7 +21,7 @@ function UpdateSelectedWells() {
       const data = req.body;
       console.log("selected wells: ", data);
     // Connect to the database
-    await sqlHandler.connect();
+    //await sqlHandler.connect();
 
     const presql=`UPDATE Well_Selection SET Selected=0`;
     await sqlHandler.query(presql);

@@ -10,7 +10,7 @@ function distinctWellList() {
     const sqlHandler = new SQLHandler();
     try {
       // Connect to the database
-      await sqlHandler.connect();
+      //await sqlHandler.connect();
       console.log("Types: ", type)
       console.log("Groups: ", wellgroups)
     

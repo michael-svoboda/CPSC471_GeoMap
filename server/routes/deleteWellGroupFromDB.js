@@ -8,7 +8,7 @@ function deleteWellGroupFromDB() {
   router.delete('/', async (req, res) => {
     try {
       const { groupname } = req.body;
-      await sqlHandler.connect();
+      //await sqlHandler.connect();
 
       // Define the SQL query to delete wells with the given groupname
       const sql = `DELETE FROM Well_Selection WHERE wellgroup = '${groupname}'`;

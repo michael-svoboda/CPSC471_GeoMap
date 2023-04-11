@@ -87,9 +87,26 @@ const columns = [
     { field: 'Stat', headerName: 'Stat', width: 130 },
   ];
 
-const ProductionChart = () => {
+const INTERVAL_TIME = 1000 // 1 sec interval
+
+const ProductionChart = (props) => {
   const [prodset, setProdDataset] = React.useState([]);
   const [gasset, setGasDataset] = React.useState([]);
+
+  const chartRef = useRef(null);
+  const gasChartRef = useRef(null);
+  const dates = [];
+  const oilprod = [];
+  const gasprod = [];
+  const waterprod = [];
+
+  var C1 = 0;
+  var C2 = 0;
+  var C3 = 0;
+  var C7P = 0; 
+  var N2 = 0;
+  var CO2 = 0;
+  
   async function fetchProdData() {
 
     try {
@@ -106,6 +123,7 @@ const ProductionChart = () => {
       console.error('Error:', err);
     }
   }
+
   async function fetchGasData() {
 
     try {
@@ -122,21 +140,22 @@ const ProductionChart = () => {
       console.error('Error:', err);
     }
   }
+
+  async function setCompositions() {
+    C1 = gasset[0].avg_C1
+    C2 = gasset[0].avg_C2
+    C3 = gasset[0].avg_C3
+    C7P = gasset[0].avg_C7P
+    N2 = gasset[0].avg_N2
+    CO2 = gasset[0].avg_CO2
+
+  }
+
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
-  const chartRef = useRef(null);
-  const gasChartRef = useRef(null);
-  const dates = [];
-  const oilprod = [];
-  const gasprod = [];
-  const waterprod = [];
-  var C1 = 0;
-  var C2 = 0;
-  var C3 = 0;
-  var C7P = 0; 
-  var N2 = 0;
-  var CO2 = 0;
+
+
   const gasData = {
     labels: ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7+', 'N2', 'CO2'],
     datasets: [
@@ -152,51 +171,42 @@ const ProductionChart = () => {
   useEffect(() => {
     fetchProdData();
     fetchGasData();
-    if(prodset!=[]){ 
-      for(let i = 0; i < prodset.length; i++){
-        dates.push(prodset[i].Date);
-        oilprod.push(prodset[i].OIL);
-        gasprod.push(prodset[i].GAS);
-        waterprod.push(prodset[i].WATER);
-      }
-    }
-    if(gasset!=[]){/*
-      C1 = (gasset[0].avg_C1*100);
-      C2 = (gasset[0].avg_C2*100);
-      C3 = (gasset[0].avg_C3*100);
-      C7P = (gasset[0].avg_C7P*100)
-      N2 = (gasset[0].avg_N2*100);
-      CO2 = (gasset[0].avg_C02*100);  */
-    }
+    setCompositions()
+    /*
+      
+    */
 
     const productionChart = new Chart(chartRef.current, {
       type: 'line',
       data: {
-        labels: dates,
+        labels: prodset.map(data => data.Date),
         datasets: [
           {
             label: 'Oil Production',
-            data: oilprod,
+            data: prodset.map(data => data.OIL),
             fill: false,
             borderColor: 'red',
             tension: 0.1,
           },
           {
             label: 'Water Production',
-            data: waterprod,
+            data: prodset.map(data => data.WATER),
             fill: false,
             borderColor: 'blue',
             tension: 0.1,
           },
           {
             label: 'Gas Production',
-            data: gasprod,
+            data: prodset.map(data => data.GAS),
             fill: false,
             borderColor: 'green',
             tension: 0.1,
           },
         ],
       },
+      options: {
+        animation: false
+      }
     });
   
     const gasChart = new Chart(gasChartRef.current, {
@@ -207,6 +217,7 @@ const ProductionChart = () => {
           {
             label: 'Gas Composition',
             data: [C1, C2, C3, C7P, N2, CO2],
+            //data: [C1, C2, C3, C7P, N2, CO2],
             backgroundColor: 'rgba(54, 162, 235, 0.2)',
             borderColor: 'rgba(54, 162, 235, 1)',
             borderWidth: 1,
@@ -214,6 +225,7 @@ const ProductionChart = () => {
         ],
       },
       options: {
+        animation: false,
         scales: {
           y: {
             beginAtZero: true,
@@ -241,7 +253,7 @@ const ProductionChart = () => {
       productionChart.destroy();
       gasChart.destroy();
     };
-  }, []);
+  }, [prodset]);
   
   //components = {{ Toolbar: GridToolbar }}
   return (

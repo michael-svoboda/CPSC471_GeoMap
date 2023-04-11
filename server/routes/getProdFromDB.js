@@ -10,7 +10,7 @@ function getProdFromDB() {
     console.log("le prod data moment?");
     try {
       // Connect to the database
-      await sqlHandler.connect();
+      //await sqlHandler.connect();
 
     
       // Define the SQL query to select distinct well groups from the wellSelection table
