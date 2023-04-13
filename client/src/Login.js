@@ -21,7 +21,7 @@ export const Login = () => {
         ).then(
           data=> {
             setBackendData(data);
-            console.log(backendData, localStorage.getItem("Success"));
+            //console.log(backendData, localStorage.getItem("Success"));
           }
         )
       }, []);
@@ -65,9 +65,9 @@ export const Login = () => {
         <p ref={errRef} className ={errMsg ?  "errMsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
         <h1>Sign In</h1>
         <form onSubmit={handleSubmit}>
-            <label htmlFor="email">email</label>;
+            <label htmlFor="email">email: </label>
             <input value={email} onChange={(e)=>setEmail(e.target.value)} type="email" placeholder="youremail@gmail.com" id="email" name="email" />
-            <label htmlFor="password">password</label>
+            <label htmlFor="password">  password: </label>
             <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="******" id="password" name="password" />
             <button type="submit">Log In</button>
         </form>
