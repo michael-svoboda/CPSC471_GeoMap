@@ -18,7 +18,7 @@ function UpdateSelectedWells() {
   router.post('/', async (req, res) => {
     try {
       // Extract the groupname from the request body
-      const data = req.body;
+      const data = req.body; 
       console.log("selected wells: ", data);
     // Connect to the database
     //await sqlHandler.connect();
