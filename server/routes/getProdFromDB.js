@@ -30,7 +30,7 @@ function getProdFromDB() {
       res.status(500).send('An error occurred while fetching data from database');
     } finally {
       // Close the database connection
-      await sqlHandler.close();
+      await sqlHandler.close(); 
     }
   });
   return router;
