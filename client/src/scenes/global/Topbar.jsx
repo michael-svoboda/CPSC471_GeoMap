@@ -1,5 +1,5 @@
 import { Box, IconButton, useTheme } from "@mui/material";
-import { useContext } from "react";
+import { createContext, useContext } from "react";
 import { ColorModeContext, tokens } from "../../theme";
 import InputBase from '@mui/material/InputBase';
 import LightModeIcon from '@mui/icons-material/LightMode';
@@ -27,10 +27,6 @@ import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import { gridColumnGroupsLookupSelector } from "@mui/x-data-grid";
 
-//import {fetchProdData, fetchGasData} from "../production/index/ProductionChart"
-import Production from "../production";
-
-
 const ITEM_HEIGHT = 60;
 const ITEM_PADDING_TOP = 0;
 const MenuProps = {
@@ -54,9 +50,10 @@ const MenuProps = {
   
 
  
-  
+export const prodContext = createContext();
+export const gasContext = createContext();
 // Box component allows us to write the CSS properties right onto the div
-const Topbar = (props) => {
+const Topbar = () => {
     const [prodset, setProdDataset] = React.useState([]);
     const [gasset, setGasDataset] = React.useState([]);
     const theme = useTheme();
@@ -129,43 +126,7 @@ const Topbar = (props) => {
     }
       }
 
-  /*
-      async function fetchGasData() {
 
-        try {
-          console.log("lover");
-          const response = await fetch('http://localhost:5000/gas-data');
-          const DataJson = await response.json();
-          const Data = DataJson.map(item => item.Data);
-          console.log(DataJson);
-          if(DataJson!=undefined){
-            setGasDataset(DataJson);
-          }
-          
-        } catch (err) {
-          console.error('Error:', err);
-        }
-  }
-  */
-
-  /*
-    async function fetchProdData() {
-
-    try {
-      console.log("hater"); 
-      const response = await fetch('http://localhost:5000/prod-data');
-      const DataJson = await response.json();
-      const Data = DataJson.map(item => item.Data);
-      console.log(DataJson);
-      if(DataJson!=undefined){
-        setProdDataset(DataJson);
-      }
-      
-    } catch (err) {
-      console.error('Error:', err);
-    }
-  }
-  */
     const handleGroupOpen = () => {
       setIsGroupDropdownOpen(true);
       fetchGroupNames();
@@ -212,8 +173,7 @@ const Topbar = (props) => {
         const selectedValues = event.target.value;
         setWell(selectedValues); //for selecting wells
         setSelectedWells(selectedValues);
-        //Production.fetchGasData();
-        //Production.fetchProdData();
+
         //fetchWellNames(alignment, group);
         //setFetchCalled(true); // add this line to update fetchCalled state
       };

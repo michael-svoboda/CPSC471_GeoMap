@@ -1,7 +1,8 @@
 import { ColorModeContext, useMode} from "./theme";
 import {Login} from "./Login";
+import {useState, useEffect} from 'react';
 import { CssBaseline, ThemeProvider } from "@mui/material";
-import {Routes, Route} from "react-router-dom";
+import {Routes, Route, Navigate} from "react-router-dom";
 import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
 import Dashboard from "./scenes/dashboard";
@@ -13,7 +14,11 @@ import Map from "./scenes/map";
 import Production from "./scenes/production";
 import Geology from "./scenes/geology";
 import LogCharts from "./scenes/wireline";
-import React from 'react';
+
+import { Logout } from "./Logout";
+
+import './App.css';
+import ProtectedRoutes from "./ProtectedRoutes";
 /* 
 import Bar from ".scenes/bar";
 
@@ -25,62 +30,36 @@ import Calendar from ".scenes/calendar"; */
 
 function App() {
   const [theme, colorMode] = useMode();
-  const [prodset, setProdDataset] = React.useState([]);
-  const [gasset, setGasDataset] = React.useState([]);
-
-  async function fetchProdData() {
-
-    try {
-      console.log("hater"); 
-      const response = await fetch('http://localhost:5000/prod-data');
-      const DataJson = await response.json();
-      const Data = DataJson.map(item => item.Data);
-      console.log(DataJson);
-      if(DataJson!=undefined){
-        setProdDataset(DataJson);
-      }
-      
-    } catch (err) {
-      console.error('Error:', err);
-    }
-  }
-
-  async function fetchGasData() {
-
-    try {
-      console.log("lover");
-      const response = await fetch('http://localhost:5000/gas-data');
-      const DataJson = await response.json();
-      const Data = DataJson.map(item => item.Data);
-      console.log(DataJson);
-      if(DataJson!=undefined){
-        setGasDataset(DataJson);
-      }
-      
-    } catch (err) {
-      console.error('Error:', err);
-    }
-  }
-
+  const [role, setRole ] = useState('')
+    useEffect(() => {
+        const currentRole = localStorage.getItem("Role");
+        if (currentRole!='') {
+          setRole(currentRole);
+        }
+    } , []);
 
   return (
   <ColorModeContext.Provider value = { colorMode }>
     <ThemeProvider theme = {theme}>
       <CssBaseline />
       <div className="app" >
-        <Login/>
+        <Logout/>
         <Sidebar/>
         <main className = "content"  >
           <Topbar />
-          <Routes> 
+          <Routes>
+            <Route exact path= '/' element={<Navigate replace to = {"/Login"}/>}/>
+            <Route exact path='/login' element={<Login/>}/>
+            <Route element = {<ProtectedRoutes/>}>
             <Route path = "/map" element = { <Map /> } />
-            <Route path = "/" element = { <Dashboard /> } />
-            <Route path = "/production" element = { <Production prodset = {prodset}/> } />
-            <Route path = "/geology" element = { <Geology /> } />
-            <Route path = "/wireline" element = { <LogCharts fetchGasData = {fetchGasData} /> } />
+            <Route path = "/dashboard" element = { <Dashboard /> } />
+            <Route path = "/production" element = {((role=="production")||(role=="manager"))? <Production />: <Navigate replace to={"/map"}/>} />
+            <Route path = "/geology" element = {((role=="geologist")||(role=="manager"))? <Geology />: <Navigate replace to={"/map"}/>} />
+            <Route path = "/wireline" element = {((role=="geologist")||(role=="manager"))? <LogCharts />: <Navigate replace to={"/map"}/>} />
             <Route path = "/contacts" element = { <Contacts /> } />
             <Route path = "/invoices" element = { <Invoices /> } />
             <Route path = "/form" element = { <Form /> } />
+            </Route>
 
             {
             /* 

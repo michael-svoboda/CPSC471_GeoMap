@@ -106,6 +106,14 @@ const ProductionChart = (props) => {
   var C7P = 0; 
   var N2 = 0;
   var CO2 = 0;
+  var C6 = 0;
+  var He = 0;
+  var H2 = 0;
+  var H2S = 0;
+  var IC4 = 0;
+  var IC5 = 0;
+  var NC4 = 0;
+  var NC5 = 0;
   
   async function fetchProdData() {
 
@@ -148,6 +156,14 @@ const ProductionChart = (props) => {
     C7P = gasset[0].avg_C7P
     N2 = gasset[0].avg_N2
     CO2 = gasset[0].avg_CO2
+    C6 = gasset[0].avg_C6
+    He = gasset[0].avg_He
+    H2 = gasset[0].avg_H2
+    H2S = gasset[0].avg_H2S
+    IC4 = gasset[0].avg_IC4
+    IC5 = gasset[0].avg_IC5
+    NC4 = gasset[0].avg_NC4
+    NC5 = gasset[0].avg_NC5
 
   }
 
@@ -212,11 +228,11 @@ const ProductionChart = (props) => {
     const gasChart = new Chart(gasChartRef.current, {
       type: 'bar',
       data: {
-        labels: ['C1', 'C2', 'C3',  'C7+', 'N2', 'CO2'],
+        labels: ['C1', 'C2', 'C3', 'C6', 'C7+', 'N2', 'CO2', 'H2', 'He', 'H2S', 'IC4', 'NC4', 'IC5', 'NC5'],
         datasets: [
           {
             label: 'Gas Composition',
-            data: [C1, C2, C3, C7P, N2, CO2],
+            data: [C1, C2, C3, C6, C7P, N2, CO2, H2, He, H2S, IC4, NC4, IC5, NC5],
             //data: [C1, C2, C3, C7P, N2, CO2],
             backgroundColor: 'rgba(54, 162, 235, 0.2)',
             borderColor: 'rgba(54, 162, 235, 1)',
