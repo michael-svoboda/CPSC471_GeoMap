@@ -12,7 +12,7 @@ const getProdFromDB = require('./routes/getProdFromDB');
 const getGasFromDB = require('./routes/getGasFromDB');
 
 const cors = require('cors');
-const bodyParser = require('body-parser');
+const bodyParser = require('body-parser'); 
 
 
 
@@ -20,7 +20,7 @@ const app = express();
 const sqlHandler = new SQLHandler();
 
 //app.use(cors());
-app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(cors({ origin: 'http://localhost:3000' })); 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -34,11 +34,18 @@ app.use((req, res, next) => {
 let Users = [
   {
     "email": "chungus@email.com",
-    "password": "peepee",
+    "password": "chocolate",
+    "role": "production"
+  },
+  {
+    "email": "john@email.com",
+    "password": "password",
+    "role": "geologist"
   },
   {
     "email": "amongus@gmail.com",
-    "password": "poopoo",
+    "password": "vanilla",
+    "role": "manager"
   }];
 
 app.get("/api", (req, res) => {
