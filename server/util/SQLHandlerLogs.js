@@ -1,6 +1,6 @@
 const mysql = require('mysql2/promise');
 
-class SQLHandler {
+class SQLHandlerLogs {
   constructor() {
     this.config = {
         /*
@@ -11,12 +11,10 @@ class SQLHandler {
         port: '3333'
         */
         
-
-        
         host: '192.168.1.79',
         user: 'alex',
         password: 'Cpsc471!',
-        database: 'petromap',
+        database: 'wirelineLASfull',
         port: '3306'
         
       };
@@ -42,4 +40,4 @@ class SQLHandler {
     }
   }
 }
-module.exports = SQLHandler;
+module.exports = SQLHandlerLogs;

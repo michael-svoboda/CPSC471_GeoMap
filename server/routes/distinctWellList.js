@@ -28,7 +28,7 @@ function distinctWellList() {
       console.log("SQL Query lol: ", sql);
       const result = await sqlHandler.query(sql);
       //const result = await sqlHandler.query(sql, [...wellgroups, ...type]);
-
+      
       console.log("QUERY RESULT: ", result)
     
       // Send the result back to the client

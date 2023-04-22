@@ -10,6 +10,8 @@ const distinctWellList = require('./routes/distinctWellList');
 const UpdateSelectedWells = require('./routes/UpdateSelectedWells');
 const getProdFromDB = require('./routes/getProdFromDB');
 const getGasFromDB = require('./routes/getGasFromDB');
+const getPassList = require('./routes/getPassList');
+const getLogDataFromDB = require('./routes/getLogDataFromDB');
 
 const cors = require('cors');
 const bodyParser = require('body-parser'); 
@@ -30,7 +32,8 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
-}); 
+});
+
 let Users = [
   {
     "email": "chungus@email.com",
@@ -61,5 +64,7 @@ app.use('/distinct-wells', distinctWellList());
 app.use('/selection-update', UpdateSelectedWells());
 app.use('/prod-data', getProdFromDB());
 app.use('/gas-data', getGasFromDB());
+app.use('/pass-data', getPassList(sqlHandler))
+app.use('/log-data', getLogDataFromDB())
 
 app.listen(5000, () => console.log('Server started on port 5000.'));

@@ -29,14 +29,6 @@ const MenuProps = {
   },
 };
 
-function getStyles(name, group, theme) {
-  return {
-    fontWeight:
-      group.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
 
 const headerData = [
     {
@@ -178,6 +170,107 @@ const ProductionChart = () => {
   const liquidChartRef = useRef(null);
   const option = 'GR1'
   const options = ['GR1','GR2','GR3','GR4']
+  const [tableName, setTableName] = React.useState([]);
+  const [UWI, setUWI] = React.useState([]);
+  const [pass, setPass] = React.useState([]);
+  const [passOptions, setPassOptions] = React.useState([]);
+  const [logs, setLogs] = React.useState([]);
+  const [logData, setLogData] = React.useState([]);
+
+  const [isPassDropdownOpen, setIsPassDropdownOpen] = React.useState(false);
+  const [isLogDropdownOpen, setIsLogDropdownOpen] = React.useState(false);
+
+  async function fetchPassOptions() {
+    try {
+      const response = await fetch('http://localhost:5000/pass-data');
+      const passNamesJson = await response.json();
+      const uwi_set = new Set(passNamesJson.map(item => item.UWI))
+      const uwi = Array.from(uwi_set)
+      //const uwi = passNamesJson.map(item => item.UWI)
+      setUWI(uwi)
+      //console.log(uwi)
+      const passNames = passNamesJson.map(item => item.pass_num);
+      setPassOptions(passNames);
+      //console.log(passNames);
+    } catch (err) {
+      console.error('Error:', err);
+    }
+  }
+
+  const handlePassOpen = () => {
+    setIsPassDropdownOpen(true);
+    fetchPassOptions();
+    // Call your function here to update the data
+  };
+
+  const handlePassChange = (event) => {
+    const selectedValue = event.target.value;
+    fetchLogData(UWI + 'g' + selectedValue);
+    setPass(selectedValue);
+    console.log("VALUE: ", selectedValue)
+    console.log("EXPECTED: ", UWI + 'g' + selectedValue)
+    //setTableName(UWI + 'g' + selectedValue)
+    //console.log("PASS CHANGED: ", tableName)
+    fetchPassOptions();
+    // Call your function here to update the data
+  };
+
+  async function fetchLogData(tableName) {
+    const table = [].concat(tableName)
+    console.log('fetch: ',tableName);
+    console.log(JSON.stringify({table_name: tableName}))
+
+    try {
+      const response = await fetch('http://localhost:5000/log-data', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({table_name: tableName})
+      });
+      const logDataJson = await response.json();
+      //const logNames = logNamesJson.map(item => item.pass_num);
+      setLogData(logDataJson);
+      console.log(logDataJson);
+    } catch (err) {
+      console.error('Error:', err);
+    }
+  }
+
+  /*
+  async function fetchWellNames(types, groups) {
+    try {
+      console.log("Types: ", types)
+      console.log("Groups: ", groups)
+      const response = await fetch('http://localhost:5000/distinct-wells', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ wellgroups: groups, type: types })
+      });
+      const UWIsJson = await response.json();
+      const UWIs = UWIsJson.map(item => item.UWI);
+      setUWIs(UWIs);
+      console.log(UWIs);
+    } catch (err) {
+      console.error('Error:', err);
+    }
+  }
+
+  */
+
+  const handleLogOpen = () => {
+    setIsPassDropdownOpen(true);
+    // Call your function here to update the data
+  };
+
+  const handleLogChange = (event) => {
+    const selectedValue = event.target.value;
+    setLogs(selectedValue);
+    //fetchLogData();
+    // Call your function here to update the data
+  };
 
   const gasData = {
     labels: ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7+', 'N2', 'CO2'],
@@ -323,55 +416,59 @@ const ProductionChart = () => {
   //components = {{ Toolbar: GridToolbar }}
   return (
   <Box sx={{ display: 'flex', height: '90vh',  flexDirection: 'column', p: 2 }}>
-    <Box sx={{ display: 'flex', flex: '5', flexDirection: 'row' }}>
-      <Box sx={{ flex: '1', display: 'flex', height: '100%', p: 2 }}>
+    <Box sx={{ display: 'flex', flex: '5', width: '100%', flexDirection: 'row' }}>
+      <Box sx={{ flex: '1', display: 'flex', flexDirection: 'column', p: 2 }}>
       <Stack spacing={1}>
-      <FormControl sx={{ m: 0, width: 350, p: 0.2 }}>
-        <InputLabel id="demo-multiple-name-label">Gamma-Ray</InputLabel>
+
+      <FormControl sx = {{flex: '1',  width: '100', paddingBottom: '20px'}}>
+        <InputLabel id="demo-multiple-name-label">Pass #</InputLabel>
         <Select
           labelId="demo-multiple-name-label"
           color="secondary"
           id="demo-multiple-name"
-          //multiple
-          //value={group}
-          //onChange={handleGroupChange}
-          //onOpen={handleGroupOpen}
+          value={pass}
+          onChange={handlePassChange}
+          onOpen={handlePassOpen}
           //onClose={handleGroupClose}
-          input={<OutlinedInput label="Name" />}
+          input={<OutlinedInput label="Pass Number" />}
           MenuProps={MenuProps}
         >
-          {options.map((name) => (
+          {passOptions.map((name) => (
             <MenuItem
               key={name}
               value={name}
-              style={getStyles(name, option, theme)}
             >
               {name}
             </MenuItem>
           ))}
         </Select>
       </FormControl>
-      
-      <FormControl>
-        <InputLabel id='SP-label'> SP </InputLabel>
-        <Select label="SP">
-        <MenuItem value="SP1">SP1</MenuItem>
-        <MenuItem value="SP2">SP2</MenuItem>
-        <MenuItem value="SP3">SP3</MenuItem>
-      </Select>
+
+      <FormControl sx = {{flex: '1',  width: '100', paddingBottom: '20px'}}>
+        <InputLabel id="demo-multiple-name-label">Logs</InputLabel>
+        <Select
+          labelId="demo-multiple-name-label"
+          color="secondary"
+          id="demo-multiple-name"
+          multiple
+          value={logs}
+          onChange={handleLogChange}
+          onOpen={handleLogOpen}
+          //onClose={handleGroupClose}
+          input={<OutlinedInput label="Wireline Logs" />}
+          MenuProps={MenuProps}
+        >
+          {logData.map((name) => (
+            <MenuItem
+              key={name}
+              value={name}
+            >
+              {name}
+            </MenuItem>
+          ))}
+        </Select>
       </FormControl>
-      <Select 
-        label="N_Phi"
-        value={'N_Phi'}>
-        <MenuItem value="N_Phi1">N_Phi1</MenuItem>
-        <MenuItem value="N_Phi2">N_Phi2</MenuItem>
-        <MenuItem value="N_Phi3">N_Phi3</MenuItem>
-      </Select>
-      <Select label="D_Phi">
-        <MenuItem value="D_Phi1">D_Phi1</MenuItem>
-        <MenuItem value="D_Phi2">D_Phi2</MenuItem>
-        <MenuItem value="D_Phi3">D_Phi3</MenuItem>
-      </Select>
+
     </Stack>
       </Box>
       
