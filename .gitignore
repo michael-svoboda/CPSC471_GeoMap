@@ -2,4 +2,6 @@ client/node_modules/
 server/node_modules/
 server/data/horizontal_well_data.geojson
 server/preprocessing/well_shape.geojson
+server/data/facilities
+server/data/pipelines
 .env

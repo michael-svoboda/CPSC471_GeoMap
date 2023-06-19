@@ -3,21 +3,24 @@ const mysql = require('mysql2/promise');
 class SQLHandler {
   constructor() {
     this.config = {
-        /*
+        
         host: 'testmike.ddns.net',
         user: 'murtaza',
         password: 'Cpsc471!',
         database: 'petromap',
         port: '3333'
-        */
+        
         
 
         
+        /*
         host: '192.168.1.79',
         user: 'alex',
         password: 'Cpsc471!',
         database: 'petromap',
         port: '3306'
+
+        */
         
       };
   }
