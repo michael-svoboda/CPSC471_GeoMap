@@ -26,7 +26,14 @@ fetch('http://localhost:5000/horz-wells')
   .then(data => {
     horizontal_well_data = data;
   });
-  
+
+let pipeline_data;
+
+fetch('http://localhost:5000/pipelines')
+  .then(response => response.json())
+  .then(data => {
+    pipeline_data = data;
+  });
 
 
 function MapboxMap() {
@@ -36,7 +43,8 @@ function MapboxMap() {
     const map = new mapboxgl.Map({
       container: 'map', // container ID
       // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
-      style: 'mapbox://styles/mapbox/dark-v11', // style URL
+      //style: 'mapbox://styles/mapbox/dark-v11', // style URL
+      style: 'mapbox://styles/mapbox/satellite-streets-v11',
       projection: 'globe', 
       zoom: 8, // starting zoom
       center: [-116.802514, 54.399590] // // starting center in [lng, lat]
@@ -92,6 +100,16 @@ function MapboxMap() {
             //clusterMaxZoom: 9,
             //clusterRadius: 50,
           });
+
+          map.addSource('pipelines', {
+            type: 'geojson',
+            data: pipeline_data,
+            //cluster: true,
+            //clusterMaxZoom: 9,
+            //clusterRadius: 50,
+          });
+
+
 
           // Add heatmap layer for zoom level 9 to 12
   map.addLayer({
@@ -151,6 +169,45 @@ function MapboxMap() {
         0
       ]
     }
+  });
+
+  map.addLayer({
+    'id': 'pipeline_data',
+    'type': 'line',
+    'source': 'pipelines',
+    'paint': {
+      //'line-color': 'rgba(0, 0, 102, 0.8)', // Rose red line color
+      'line-color': [
+        'interpolate',
+        ['linear'],
+        ['to-number', ['get', 'WALL_THICK']],
+        0, 'rgba(255, 255, 255, 0.7)', // Minimum thickness, e.g., 0
+        10, 'rgba(232, 80, 5, 0.6)', // Maximum thickness, e.g., 10
+      ],
+      'line-opacity': [
+        'interpolate',
+        ['linear'],
+        ['zoom'],
+        5,
+        0,
+        8,
+        0.1,
+        10,
+        1
+      ],
+      'line-width': [
+        'interpolate',
+        ['linear'],
+        ['to-number', ['get', 'OUT_DIAMET']],
+        60, 1, // Minimum diameter, e.g., 0
+        300, 4, // Maximum diameter, e.g., 100
+      ],
+    },
+    'layout': {
+      'line-cap': 'round',
+      'line-join': 'round'
+    },
+    'minzoom': 5
   });
 
   map.addLayer({
@@ -315,6 +372,8 @@ function MapboxMap() {
     'minzoom': 5
   });
 
+
+
   
 
   
@@ -428,6 +487,8 @@ function MapboxMap() {
     minzoom: 5,
     'filter': ['in', 'uwi', '']
   });
+
+  
 
   // Set `true` to dispatch the event before other functions
 // call it. This is necessary for disabling the default map

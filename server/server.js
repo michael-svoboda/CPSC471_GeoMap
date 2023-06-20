@@ -2,6 +2,7 @@ const express = require('express');
 const SQLHandler = require('./util/SQLHandler');
 const horzWellsRouter = require('./routes/horzWells');
 const vertWellListRouter = require('./routes/vertWellList');
+const pipelineListRouter = require('./routes/pipelines');
 const selectedWellsRouter = require('./routes/writeWellSelection');
 const saveWellGroupToDB = require('./routes/saveWellGroupToDB');
 const deleteWellGroupFromDB = require('./routes/deleteWellGroupFromDB');
@@ -56,6 +57,7 @@ app.get("/api", (req, res) => {
 })
 app.use('/vert-wells', vertWellListRouter(sqlHandler));
 app.use('/horz-wells', horzWellsRouter(sqlHandler));
+app.use('/pipelines', pipelineListRouter());
 app.use('/selected-wells', selectedWellsRouter());
 app.use('/save-well-group',saveWellGroupToDB());
 app.use('/delete-well-group', deleteWellGroupFromDB());
